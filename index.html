@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YAN OFFICIAL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0e7ff 100%);
+        }
+
+        .container {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s ease;
+            border: 1px solid #2a2a2a;
+        }
+
+        body.light-mode .container {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0e0e0;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #2a2a2a;
+            border: 2px solid #3a3a3a;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e0e0e0;
+            color: #333;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: #3a3a3a;
+        }
+
+        body.light-mode .theme-toggle:hover {
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 4px solid #2a2a2a;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        body.light-mode .logo {
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        .logo::after {
+            content: '📷';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #667eea;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid #1a1a1a;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover::after {
+            opacity: 1;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode h1 {
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            color: #999999;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode .subtitle {
+            color: #555;
+        }
+
+        .status {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .menu {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-item:active {
+            transform: translateY(0);
+        }
+
+        .icon {
+            font-size: 24px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        body.light-mode .modal {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #2a2a2a;
+        }
+
+        body.light-mode .modal-content {
+            background: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2a2a2a;
+        }
+
+        body.light-mode .modal-header {
+            border-bottom: 2px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        body.light-mode .modal-title {
+            color: #333;
+        }
+
+        .close-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        body.light-mode .input-group label {
+            color: #333;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #2a2a2a;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+
+        body.light-mode .input-group input,
+        body.light-mode .input-group textarea {
+            border: 2px solid #ddd;
+            background: white;
+            color: #333;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            word-break: break-all;
+            border: 1px solid #2a2a2a;
+        }
+
+        body.light-mode .result {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        body.light-mode .result-title {
+            color: #333;
+        }
+
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .wa-container {
+            background: #0b141a;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .wa-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #1f2c34;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 1px;
+        }
+
+        .wa-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .wa-contact-name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .wa-message-bubble {
+            background: #005c4b;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 10px;
+            position: relative;
+        }
+
+        .wa-reactions {
+            display: flex;
+            gap: 5px;
+            background: #2a3942;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 10px;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .wa-quoted-message {
+            background: #1f2c34;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px;
+            border-left: 3px solid #00a884;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wa-emoji-reaction {
+            font-size: 20px;
+        }
+
+        .wa-menu {
+            background: #2a3942;
+            border-radius: 8px;
+            margin: 10px;
+            overflow: hidden;
+        }
+
+        .wa-menu-item {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.2s;
+        }
+
+        .wa-menu-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .wa-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .wa-menu-item.danger {
+            color: #ff3b30;
+        }
+
+        .wa-menu-icon {
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .wa-time {
+            font-size: 11px;
+            color: #8696a0;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+    
+    <div class="container">
+        <div class="header">
+            <input type="file" id="photoInput" accept="image/*" onchange="changePhoto(event)">
+            <div class="logo" id="profileLogo" onclick="document.getElementById('photoInput').click()" title="Klik untuk ganti foto">Y</div>
+            <h1>YAN OFFICIAL</h1>
+            <p class="subtitle">Multi-Purpose Tools Platform</p>
+            <span class="status">● Online</span>
+        </div>
+
+        <div class="menu">
+            <button class="menu-item" onclick="openModal('tiktok')">
+                <span class="icon">⬇</span>
+                <span>Tiktok Downloader</span>
+            </button>
+            <button class="menu-item" onclick="openModal('trackip')">
+                <span class="icon">🔍</span>
+                <span>Track IP Address</span>
+            </button>
+            <button class="menu-item" onclick="openModal('cekkhodam')">
+                <span class="icon">💡</span>
+                <span>Cek Khodam</span>
+            </button>
+            <button class="menu-item" onclick="openModal('ai')">
+                <span class="icon">🤖</span>
+                <span>AI - Natzu</span>
+            </button>
+            <button class="menu-item" onclick="openModal('quotediphone')">
+                <span class="icon">📱</span>
+                <span>Quoted iPhone</span>
+            </button>
+            <button class="menu-item" onclick="openModal('bratimage')">
+                <span class="icon">🖼</span>
+                <span>Brat Image Generator</span>
+            </button>
+            <button class="menu-item" onclick="openModal('copycode')">
+                <span class="icon">⚙</span>
+                <span>Tools Copy Code Web</span>
+            </button>
+            <button class="menu-item" onclick="openModal('deploy')">
+                <span class="icon">☁</span>
+                <span>Deploy Website</span>
+            </button>
+            <button class="menu-item" onclick="openModal('developer')">
+                <span class="icon">👨‍💻</span>
+                <span>Developer Info</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Tiktok Downloader -->
+    <div id="tiktok" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tiktok Downloader</h2>
+                <button class="close-btn" onclick="closeModal('tiktok')">×</button>
+            </div>
+            <div class="input-group">
+                <label>Masukkan URL Tiktok</label>
+                <input type="text" id="tiktokUrl" placeholder="https://vt.tiktok.com/...">
+            </div>
+            <button class="btn" onclick="downloadTiktok()">Download Video</button>
+            <div id="tiktokResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal Track IP -->
+    <div id="trackip" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Track IP Address</h2>
+                <button class="close-btn" onclick="closeModal('trackip')">×</button>
+            </div>
+            <div class="input-group">
+                <label>Masukkan IP Address</label>
+                <input type="text" id="ipAddress" placeholder="8.8.8.8">
+            </div>
+            <button class="btn" onclick="trackIP()">Track IP</button>
+            <div id="ipResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal Cek Khodam -->
+    <div id="cekkhodam" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Cek Khodam</h2>
+                <button class="close-btn" onclick="closeModal('cekkhodam')">×</button>
+            </div>
+            <div class="input-group">
+                <label>Masukkan Nama</label>
+                <input type="text" id="namaKhodam" placeholder="Nama Anda">
+            </div>
+            <button class="btn" onclick="cekKhodam()">Cek Khodam</button>
+            <div id="khodamResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal AI -->
+    <div id="ai" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">AI - Natzu</h2>
+                <button class="close-btn" onclick="closeModal('ai')">×</button>
+            </div>
+            <div class="input-group">
+                <label>Tanyakan Sesuatu</label>
+                <textarea id="aiQuestion" rows="4" placeholder="Ketik pertanyaan Anda..."></textarea>
+            </div>
+            <button class="btn" onclick="askAI()">Tanya AI</button>
+            <div id="aiResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal Quoted iPhone -->
+    <div id="quotediphone" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Quoted iPhone (WA Style)</h2>
+                <button class="close-btn" onclick="closeModal('quotediphone')">×</button>
+            </div>
+            <div class="input-group">
+                <label>Nama Pengirim</label>
+                <input type="text" id="quoteName" placeholder="Nama kontak">
+            </div>
+            <div class="input-group">
+                <label>Pesan</label>
+                <textarea id="quoteMessage" rows="3" placeholder="Tulis pesan..."></textarea>
+            </div>
+            <div class="input-group">
+                <label>Pilih Emoji Reaksi</label>
+                <div style="display: flex; gap: 10px; font-size: 32px; margin-top: 10px;">
+                    <span style="cursor: pointer;" onclick="selectEmoji('👍')">👍</span>
+                    <span style="cursor: pointer;" onclick="selectEmoji('❤️')">❤️</span>
+                    <span style="cursor: pointer;" onclick="selectEmoji('😂')">😂</span>
+                    <span style="cursor: pointer;" onclick="selectEmoji('😮')">😮</span>
+                    <span style="cursor: pointer;" onclick="selectEmoji('😢')">😢</span>
+                    <span style="cursor: pointer;" onclick="selectEmoji('🙏')">🙏</span>
+                </div>
+                <input type="hidden" id="selectedEmoji" value="❤️">
+            </div>
+            <button class="btn" onclick="generateQuote()">Generate Quote</button>
+            <div id="quoteResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Modal Brat Image -->
+    <div id="bratimage" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Brat Image Generator</h2>
+                <button class="close-btn" onclick="closeModal('bratimage')">×</button>
+            </div>
+            <div class=
